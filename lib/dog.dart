@@ -46,6 +46,14 @@ class Dog {
     return persistencia.getAllDogsListMap();
   }
 
+  // Future<List<String>> get getAllDogListString {
+  //   DatabaseConnection banco =
+  //       DatabaseConnection(dataBaseName: 'doggie_database.db');
+  //   DogPersistencia persistencia =
+  //       DogPersistencia(dog: this, bancoDeDados: banco.getdatabase());
+  //   return persistencia.getAllDogListString();
+  // }
+
   Future<List<Map<String, dynamic>>> get getAllDogListaMapString {
     DatabaseConnection banco =
         DatabaseConnection(dataBaseName: 'doggie_database.db');

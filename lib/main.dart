@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 
 import 'package:sqflite_app/db_test.dart';
 import 'package:sqflite_app/dog.dart';
@@ -71,89 +72,59 @@ class _MyHomePageState extends State<MyHomePage> {
     Dog newdog = Dog(id: 2, name: 'Hulaaaa', age: 3);
     newdog.incluirDog();
 
-    // DoguinhosJson lista = DoguinhosJson.fromJson(listaDog.toString())
+    Future<List<Dog>> getDadosDogs() {
+      return Dog().getAllDog;
+    }
 
-    // lista = Dog().getAllDog;
+    ;
 
-    Future<List<Map<String , dynamic>>> listaDog = Dog().getAllDogListaMapString;
-
-   // listaDog.toMap();
-
-    // Widget getTextWidgetsFromListaDogs() {
-    //   List<Widget> list = <Widget>[];
-    //   for (var doguinho in listaDog.['name']) {
-    //     list.add(Text(doguinho.name!));
-    //   }
-    //   return Row(children: list);
-    // }
+    buildForm() {
+      Future<List<Dog>> listaDog = getDadosDogs();
+      return Form(
+        child: SingleChildScrollView(
+          child: FutureBuilder(
+              future: getDadosDogs(),
+              builder: (context, snapshot) {
+                return Column(
+                  children: [
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: 2,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Card(
+                          elevation: 3,
+                          color: Colors.greenAccent,
+                          child: ListTile(
+                            title:
+                                //getTextWidgetsFromListaDogs(),
+                                Text(
+                              'Nome ${listaDog[index].name!} ',
+                            ),
+                            leading: const Icon(
+                              Icons.payment,
+                              color: Colors.white,
+                            ),
+                            selected: true,
+                            tileColor: Colors.grey,
+                            onTap: () {
+                              const SnackBar(content: Text('Marcar'));
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                );
+              }),
+        ),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Form(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: 2,
-                itemBuilder: (BuildContext context, int index) {
-                  return Card(
-                    elevation: 3,
-                    color: Colors.greenAccent,
-                    child: ListTile(
-                      title: 
-                      //getTextWidgetsFromListaDogs(),
-                      Text(
-                        'Nome ${listaDog.[index].name!} ',
-                        
-                      ),
-                      leading: const Icon(
-                        Icons.payment,
-                        color: Colors.white,
-                      ),
-                      selected: true,
-                      tileColor: Colors.grey,
-                      onTap: () {
-                        const SnackBar(content: Text('Marcar'));
-                      },
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-
-      // body: Center(
-      //   child: Column(
-      //     mainAxisAlignment: MainAxisAlignment.center,
-      //     children: <Widget>[
-      //       // for (var doginho in lista){
-      //       //   Text(doginho.name),
-      //       // },
-      //       // Column(children: [
-
-      //       // listaDog.forEach((k,v) => Text(objeto.name!))
-      //       // ]),
-      //       // Column(children: [
-      //       //   for (var objeto in listaDog.['name']) Text(objeto.name!)
-      //       // ]),
-      //       getTextWidgetsFromListaDogs(listdogs: listaDog),
-      //       Text(
-      //         '$_counter',
-      //         style: Theme.of(context).textTheme.headline4,
-      //       ),
-      //     ],
-      //   ),
-      // ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
+      body: buildForm(),
     );
   }
 }

@@ -35,6 +35,12 @@ class DogPersistencia {
     return bancoDeDados.rawQuery('Select * from dogs');
   }
 
+  // Future<List<String>> getAllDogListString() {
+  //   List<String> lista = [];
+
+  //   lista.add(value)
+  // }
+
   Future<List<Map<String, dynamic>>> getAllDogListaMapString() {
     return bancoDeDados.rawQuery('Select * from dogs');
   }
