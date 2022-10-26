@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
-
-import 'package:sqflite_app/db_test.dart';
-import 'package:sqflite_app/dog.dart';
-import 'package:sqflite_app/dog_persistencia.dart';
+import 'package:sqflite_app/database_helper.dart';
+//import 'package:sqflite_app/dog.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,7 +8,6 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -29,7 +25,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -43,43 +39,57 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class DoguinhosJson {
-  final List<String> nomeDoDog;
-  DoguinhosJson({
-    required this.nomeDoDog,
-  });
-
-  factory DoguinhosJson.fromJson(Map<String, dynamic> json) {
-    return DoguinhosJson(
-      nomeDoDog: json['name'],
-    );
-  }
-}
-
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  get i => null;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  final dbHelper = DatabaseHelper.instance;
 
   @override
   Widget build(BuildContext context) {
-    Dog newdog = Dog(id: 2, name: 'Hulaaaa', age: 3);
-    newdog.incluirDog();
+    // Dog newdog = Dog(id: 2, name: 'Hulaaaa', age: 3);
+    // newdog.incluirDog();
 
-    Future<List<Dog>> getDadosDogs() {
-      return Dog().getAllDog;
+    incluirDogs() async {
+      Map<String, dynamic> dog1 = {
+        DatabaseHelper.columnName: 'May',
+        DatabaseHelper.columnAge: '14'
+      };
+      Map<String, dynamic> dog2 = {
+        DatabaseHelper.columnName: 'Tita',
+        DatabaseHelper.columnAge: '9'
+      };
+      Map<String, dynamic> dog3 = {
+        DatabaseHelper.columnName: 'Kenai',
+        DatabaseHelper.columnAge: '6'
+      };
+      Map<String, dynamic> dog4 = {
+        DatabaseHelper.columnName: 'Yoko',
+        DatabaseHelper.columnAge: '5'
+      };
+      Map<String, dynamic> dog5 = {
+        DatabaseHelper.columnName: 'Maria',
+        DatabaseHelper.columnAge: '3'
+      };
+      Map<String, dynamic> dog6 = {
+        DatabaseHelper.columnName: 'Hula',
+        DatabaseHelper.columnAge: '3'
+      };
+
+      dbHelper.insert(dog1);
+      dbHelper.insert(dog2);
+      dbHelper.insert(dog3);
+      dbHelper.insert(dog4);
+      dbHelper.insert(dog5);
+      dbHelper.insert(dog6);
     }
 
-    ;
+    getDadosDogs() async {
+      // incluirDogs();
+      return await dbHelper.obterListMapDog();
+    }
+
+    // ;
 
     buildForm() {
-      Future<List<Dog>> listaDog = getDadosDogs();
+      //Future<List<Dog>> listaDog = getDadosDogs();
       return Form(
         child: SingleChildScrollView(
           child: FutureBuilder(
@@ -89,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     ListView.builder(
                       shrinkWrap: true,
-                      itemCount: 2,
+                      itemCount: 6,
                       itemBuilder: (BuildContext context, int index) {
                         return Card(
                           elevation: 3,
@@ -98,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             title:
                                 //getTextWidgetsFromListaDogs(),
                                 Text(
-                              'Nome ${listaDog[index].name!} ',
+                              'Nome: ${snapshot.data[index]['name']} ',
                             ),
                             leading: const Icon(
                               Icons.payment,

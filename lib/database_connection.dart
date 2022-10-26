@@ -8,7 +8,7 @@ class DatabaseConnection {
     required this.dataBaseName,
   });
 
-  getdatabase() async {
+  Future<dynamic> getdatabase() async {
     return openDatabase(join(await getDatabasesPath(), dataBaseName));
   }
 }
